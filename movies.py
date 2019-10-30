@@ -6,14 +6,14 @@ from setup import get_titles, data_one_movie_to_db, additional_data_dict, change
 class Movies:
     def __init__(self, config_db):
         self.config_db = config_db
-        self.titles = get_titles()
-        change_cast_name()
+        self.titles = get_titles(self.config_db)
+        change_cast_name(self.config_db)
         self.main_dict = additional_data_dict(self.titles)
 
     def complete_all(self) -> str:
         """Complete movie data from IMDb to database file."""
         for title in self.titles:
-            data_one_movie_to_db(title)
+            data_one_movie_to_db(self.config_db, title)
         return "Data about movies was added to database file."
 
     def sort_by(self, columns: list) -> list:
@@ -90,14 +90,14 @@ class Movies:
                         AWARDS, IMDb_Rating, IMDb_votes, BOX_OFFICE) VALUES ('{}', NULL, NULL, NULL, NULL, NULL, NULL, 
                         NULL, NULL, NULL, NULL, NULL, NULL)""".format(movie_title)
                 cursor.execute(_SQL)
-            data_one_movie_to_db(movie_title)
+            data_one_movie_to_db(self.config_db, movie_title)
         except Exception as err:
             print("Something went wrong:", str(err))
 
     def high_scores(self) -> dict:
         """Show current high scores."""
         high_scores = {}
-        params = ['runtime', 'box_office', 'wins_others', 'nominations_others', 'oscars', 'imbd_rating']
+        params = ['runtime', 'box_office', 'wins_others', 'nominations_others', 'oscars', 'imdb_rating']
         for param in params:
             title_of_high = max(self.main_dict, key=lambda k: self.main_dict[k][param])
             high_scores[param] = {}

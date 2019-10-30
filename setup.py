@@ -4,10 +4,8 @@ import json
 import sqlite3
 from db import UseDatabase
 
-config_db = 'movies.sqlite'
 
-
-def get_titles() -> list:
+def get_titles(config_db) -> list:
     """Create a list of movie titles from db source."""
     try:
         with UseDatabase(config_db) as cursor:
@@ -20,18 +18,18 @@ def get_titles() -> list:
         print("Something went wrong:", str(err))
 
 
-def change_cast_name():
+def change_cast_name(config_db):
     """Change 'cast' column name in database.
     CAST is SQL function, so we would have errors during creating sql query with 'cast' column."""
     try:
         with UseDatabase(config_db) as cursor:
-            _SQL = "ALTER TABLE movies RENAME COLUMN cast TO ACTORS"
+            _SQL = "ALTER TABLE movies RENAME COLUMN IF EXISTS cast TO ACTORS"
             cursor.execute(_SQL)
     except sqlite3.OperationalError:
         pass
 
 
-def data_one_movie_to_db(title: str) -> None:
+def data_one_movie_to_db(config_db, title: str) -> None:
     """Fulfill data about one movie to database."""
     try:
         with UseDatabase(config_db) as cursor:
@@ -63,7 +61,7 @@ def additional_data_dict(titles: list) -> dict:
         # Because of no BoxOffice key in API for movie 'Ben Hur' (ID 68 in db):
         api_content.setdefault('BoxOffice', 'N/A')
         additional_data[title] = {}
-        additional_data[title]['imbd_rating'] = float(api_content['imdbRating'])
+        additional_data[title]['imdb_rating'] = float(api_content['imdbRating'])
         if api_content['Runtime'] == 'N/A':
             additional_data[title]['runtime'] = -1
         else:
