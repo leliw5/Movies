@@ -3,6 +3,8 @@
 
 <p align="center">
   <h1 align="center">Movies</h1>
+<br>
+<br>
 
 <!-- TABLE OF CONTENTS -->
 # Table of Contents
@@ -52,7 +54,7 @@ git https:://github.com/leliw5/Movies.git
 # Usage
 
 ## Complete movie data
-Complete movie data from  in your `movies.sqlite` file.
+Complete movie data from IMDb to your `movies.sqlite` file.
 ```
 python movies.py --complete_data
 ```
