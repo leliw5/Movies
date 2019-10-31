@@ -1,6 +1,8 @@
 import movies
 import sqlite3
 import unittest
+import requests
+import json
 
 
 class MoviesTest(unittest.TestCase):
@@ -31,6 +33,31 @@ class MoviesTest(unittest.TestCase):
         self.movie_test = movies.Movies("test_database.sqlite")
         # complete data about 2 movies
         self.movie_test.complete_all()
+
+    def test_conn_api_ok(self):
+        url = "http://www.omdbapi.com/?i=tt3896198&apikey=6b513db6"
+        req = requests.get(url)
+        result = req.status_code
+        expected = 200
+        self.assertEqual(result, expected)
+
+    def test_api_correct_title(self):
+        url = "http://www.omdbapi.com/?i=tt3896198&apikey=6b513db6&t=" + "Se7en"
+        headers = {"Accept": "application/json"}
+        req = requests.get(url, headers=headers)
+        json_response = json.loads(req.content.decode('utf-8'))
+        result = json_response['Response']
+        expected = 'True'
+        self.assertEqual(result, expected)
+
+    def test_api_wrong_title(self):
+        url = "http://www.omdbapi.com/?i=tt3896198&apikey=6b513db6&t=" + "wrong title"
+        headers = {"Accept": "application/json"}
+        req = requests.get(url, headers=headers)
+        json_response = json.loads(req.content.decode('utf-8'))
+        result = json_response['Response']
+        expected = 'False'
+        self.assertEqual(result, expected)
 
     def test_sort_by(self):
         columns = ['year', 'genre']
