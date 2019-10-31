@@ -67,7 +67,7 @@ class Movies:
         except Exception as err:
             print("Something went wrong:", str(err))
 
-    def compare(self, param: str, *args: list) -> dict:
+    def compare(self, param: str, *args: str) -> dict:
         """Compare movies by: IMDb Rating, Box office earnings, Number of awards won, Runtime."""
         try:
             contents = {}
