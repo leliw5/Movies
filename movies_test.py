@@ -64,8 +64,8 @@ class MoviesTest(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_compare_wrong(self):
-        result = self.movie_test.compare("wrong", "Se7en", "Gladiator")
-        expected = None
+        result = self.movie_test.compare("runtime", "wrong", "titles")
+        expected = {}
         self.assertEqual(result, expected)
 
     def test_high_scores(self):
