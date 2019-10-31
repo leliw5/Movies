@@ -46,7 +46,7 @@ pip install requests
  
 Clone the repository Movies
 ```
-git https:://github.com/leliw5/Movies.git
+git https://github.com/leliw5/Movies.git
 ```
 ** You can change default list of movies titles - edit `movies.sqlite` file (e.g. using _DB Browser for SQLite_).
 
