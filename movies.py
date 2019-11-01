@@ -40,7 +40,7 @@ class Movies:
                 _SQL = """SELECT title, {} FROM movies WHERE {} LIKE {}""".format(name, name, end)
                 with UseDatabase(self.config_db) as cursor:
                     cursor.execute(_SQL)
-                    contents = cursor.fetchall()
+                    contents = dict(cursor.fetchall())
             elif name == 'box office':
                 label_f = name.title()
                 for title in self.titles:
@@ -122,7 +122,7 @@ if __name__ == '__main__':
             else:
                 label, filter_result = movie.filter_by(sys.argv[2], sys.argv[3])
             print("{:<45} {:<75}".format('Title', label))
-            for k, v in filter_result .items():
+            for k, v in filter_result.items():
                 print("{:<45} {:<75}".format(k, v))
         elif sys.argv[1] == '--compare':
             compare_result = movie.compare(sys.argv[2], sys.argv[3], sys.argv[4])
