@@ -28,6 +28,7 @@ You can sort, filter, compare, add and check the high scores of movies on your l
 * Python 3.7
 * [OMDb API][omdb_api]
 * [requests][requests]
+* [pytest][pytest] (**only if you want to test)
 
 <!-- GETTING STARTED -->
 # Getting Started
@@ -154,6 +155,11 @@ python movies_test.py
 ```
 
 ## pytest
+Install pytest:
+```
+pip install pytest
+```
+Run pytest:
 ```
 pytest movies_pytest.py
 ```
@@ -169,3 +175,4 @@ Project Link: [https://github.com/leliw5/Movies](https://github.com/leliw5/Movie
 [linkedin-url]: https://www.linkedin.com/in/mateusz-leliwa/
 [omdb_api]: http://www.omdbapi.com
 [requests]: https://pypi.org/project/requests
+[pytest]: https://pypi.org/project/pytest/
