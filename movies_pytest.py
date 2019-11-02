@@ -29,10 +29,10 @@ def setup():
     conn.commit()
 
     # create instance
-    movie_test = movies.Movies("test_database.sqlite")
+    movie = movies.Movies("test_database.sqlite")
     # complete data about 2 movies
-    movie_test.complete_all()
-    return movie_test
+    movie.complete_all()
+    return movie
 
 
 class TestClass:
@@ -103,7 +103,3 @@ class TestClass:
         expected = {'runtime': {'Gladiator': 155}, 'box_office': {'Gladiator': -1}, 'wins_others': {'Gladiator': 53},
                     'nominations_others': {'Gladiator': 101}, 'oscars': {'Gladiator': 5}, 'imdb_rating': {'Se7en': 8.6}}
         assert result == expected
-
-
-if __name__ == '__main__':
-    pass

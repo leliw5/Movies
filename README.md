@@ -146,6 +146,18 @@ Show current high scores in:
 python movies.py --high_scores
 ```
 
+# Tests
+
+## unittest
+```
+python movies_test.py
+```
+
+## pytest
+```
+pytest movies_pytest.py
+```
+
 <!-- CONTACT -->
 # Contact
 
