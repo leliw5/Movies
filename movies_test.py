@@ -69,14 +69,14 @@ class MoviesTest(unittest.TestCase):
         name = 'director'
         arg = 'Ridley Scott'
         result = self.movie_test.filter_by(name, arg)
-        expected = ('Director', [('Gladiator', 'Ridley Scott')])
+        expected = ('Director', {'Gladiator': 'Ridley Scott'})
         self.assertEqual(result, expected)
 
     def test_filter_by_wrong(self):
         name = 'director'
         arg = 'Jan Error'
         result = self.movie_test.filter_by(name, arg)
-        expected = ('Director', [])
+        expected = ('Director', {})
         self.assertEqual(result, expected)
 
     def test_filter_by_only_name(self):
