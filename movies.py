@@ -109,8 +109,8 @@ if __name__ == '__main__':
     movie = Movies('movies.sqlite')
     if len(sys.argv) > 1:
         if sys.argv[1] == '--add':
-            movie.add(sys.argv[2])
-            print(f"The movie {sys.argv[2]} was added.")
+            movie.add(sys.argv[2].tile())
+            print(f"The movie {sys.argv[2]} was added to database.")
         elif sys.argv[1] == '--sort_by':
             sort_result = movie.sort_by(sys.argv[2:])
             for row in sort_result:
@@ -125,7 +125,7 @@ if __name__ == '__main__':
             for k, v in filter_result.items():
                 print("{:<45} {:<75}".format(k, v))
         elif sys.argv[1] == '--compare':
-            compare_result = movie.compare(sys.argv[2], sys.argv[3], sys.argv[4])
+            compare_result = movie.compare(sys.argv[2], sys.argv[3].title(), sys.argv[4].title())
             print("{:<45} {:<75}".format('Title', 'Value'))
             for k, v in compare_result.items():
                 print("{:<45} {:<75}".format(k, v))
@@ -137,4 +137,4 @@ if __name__ == '__main__':
         elif sys.argv[1] == '--complete_data':
             movie.complete_all()
         else:
-            print('Wrong command. Please read README.')
+            print('Wrong command. Please read README on GitHub.')

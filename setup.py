@@ -46,48 +46,58 @@ def data_one_movie_to_db(config_db, title: str) -> None:
             _SQL = """UPDATE MOVIES SET YEAR=?, RUNTIME=?, GENRE=?, DIRECTOR=?, ACTORS=?, WRITER=?, LANGUAGE=?,
              COUNTRY=?, AWARDS=?, IMDb_Rating=?, IMDb_votes=?, BOX_OFFICE=? WHERE TITLE=?"""
             cursor.execute(_SQL, json_keys)
+    except KeyError:
+        print("No API data about this movie.")
     except Exception as err:
         print("Something went wrong:", str(err))
 
 
-def additional_data_dict(titles: list) -> dict:
+def additional_data_dict(titles: list) -> dict or str:
     """Create dict with some data about movies to easier data processing."""
-    additional_data = {}
-    for title in titles:
-        url = "http://www.omdbapi.com/?i=tt3896198&apikey=6b513db6&t=" + title
-        headers = {"Accept": "application/json"}
-        req = requests.get(url, headers=headers)
-        api_content = json.loads(req.content.decode('utf-8'))
-        # Because of no BoxOffice key in API for movie 'Ben Hur' (ID 68 in db):
-        api_content.setdefault('BoxOffice', 'N/A')
-        additional_data[title] = {}
-        additional_data[title]['imdb_rating'] = float(api_content['imdbRating'])
-        if api_content['Runtime'] == 'N/A':
-            additional_data[title]['runtime'] = -1
-        else:
-            additional_data[title]['runtime'] = int(re.sub(r'[^0-9]', '', api_content['Runtime']))
-        if api_content['BoxOffice'] == 'N/A':
-            additional_data[title]['box_office'] = -1
-        else:
-            additional_data[title]['box_office'] = int(re.sub(r'[^0-9]', '', api_content['BoxOffice']))
-        nominations_oscars = re.search(r'Nominated for (.+?) Oscar', api_content['Awards'])
-        if nominations_oscars:
-            additional_data[title]['nominations_oscars'] = int(nominations_oscars.group(1))
-        else:
-            additional_data[title]['nominations_oscars'] = 0
-        oscars = re.search(r'Won (.+?) Oscar', api_content['Awards'])
-        if oscars:
-            additional_data[title]['oscars'] = int(oscars.group(1))
-        else:
-            additional_data[title]['oscars'] = 0
-        nominations_others = re.search(r'(\d+) nomination', api_content['Awards'])
-        if nominations_others:
-            additional_data[title]['nominations_others'] = int(nominations_others.group(1))
-        else:
-            additional_data[title]['nominations_others'] = 0
-        wins_others = re.search(r'(\d+) win', api_content['Awards'])
-        if wins_others:
-            additional_data[title]['wins_others'] = int(wins_others.group(1))
-        else:
-            additional_data[title]['wins_others'] = 0
-    return additional_data
+    try:
+        additional_data = {}
+        for title in titles:
+            url = "http://www.omdbapi.com/?i=tt3896198&apikey=6b513db6&t=" + title
+            headers = {"Accept": "application/json"}
+            req = requests.get(url, headers=headers)
+            api_content = json.loads(req.content.decode('utf-8'))
+            # Because of no BoxOffice key in API for movie 'Ben Hur' (ID 68 in db):
+            api_content.setdefault('BoxOffice', 'N/A')
+            additional_data[title] = {}
+            if api_content['imdbRating']:
+                additional_data[title]['imdb_rating'] = float(api_content['imdbRating'])
+            else:
+                additional_data[title]['imdb_rating'] = -1
+            if api_content['Runtime'] == 'N/A':
+                additional_data[title]['runtime'] = -1
+            else:
+                additional_data[title]['runtime'] = int(re.sub(r'[^0-9]', '', api_content['Runtime']))
+            if api_content['BoxOffice'] == 'N/A':
+                additional_data[title]['box_office'] = -1
+            else:
+                additional_data[title]['box_office'] = int(re.sub(r'[^0-9]', '', api_content['BoxOffice']))
+            nominations_oscars = re.search(r'Nominated for (.+?) Oscar', api_content['Awards'])
+            if nominations_oscars:
+                additional_data[title]['nominations_oscars'] = int(nominations_oscars.group(1))
+            else:
+                additional_data[title]['nominations_oscars'] = 0
+            oscars = re.search(r'Won (.+?) Oscar', api_content['Awards'])
+            if oscars:
+                additional_data[title]['oscars'] = int(oscars.group(1))
+            else:
+                additional_data[title]['oscars'] = 0
+            nominations_others = re.search(r'(\d+) nomination', api_content['Awards'])
+            if nominations_others:
+                additional_data[title]['nominations_others'] = int(nominations_others.group(1))
+            else:
+                additional_data[title]['nominations_others'] = 0
+            wins_others = re.search(r'(\d+) win', api_content['Awards'])
+            if wins_others:
+                additional_data[title]['wins_others'] = int(wins_others.group(1))
+            else:
+                additional_data[title]['wins_others'] = 0
+        return additional_data
+    except KeyError:
+        return "No data about some movie(s). Check data source."
+    except requests.exceptions.ConnectionError:
+        return "No access. Check internet connection or API is down."
