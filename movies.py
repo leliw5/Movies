@@ -115,7 +115,8 @@ if __name__ == '__main__':
             sort_result = movie.sort_by(sys.argv[2:])
             for row in sort_result:
                 for elem in row:
-                    print(str(elem).ljust(80), end='')
+                    print(str(elem).ljust(45), end='')
+                print()
         elif sys.argv[1] == '--filter_by':
             if len(sys.argv) == 3:
                 label, filter_result = movie.filter_by(sys.argv[2])
