@@ -23,7 +23,7 @@ def change_cast_name(config_db):
     CAST is SQL function, so we would have errors during creating sql query with 'cast' column."""
     try:
         with UseDatabase(config_db) as cursor:
-            _SQL = "ALTER TABLE movies RENAME COLUMN IF EXISTS cast TO ACTORS"
+            _SQL = "ALTER TABLE movies RENAME COLUMN cast TO ACTORS"
             cursor.execute(_SQL)
     except sqlite3.OperationalError:
         pass
