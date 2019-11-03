@@ -85,9 +85,9 @@ python movies.py --filter_by director "first_name last_name"
 ```
 - Actor
 ```
-python movies.py --filter_by actor "first_name last_name"
+python movies.py --filter_by actors "first_name last_name"
 ```
-- Movies that was nominated  for Oscar but did not win any.
+- Movies that was nominated for Oscar but did not win any.
 ```
 python movies.py --filter_by "only oscars nominates"
 ```
